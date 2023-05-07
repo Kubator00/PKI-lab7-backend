@@ -81,23 +81,13 @@ module.exports.pool = pool;
     client.release()
 })();
 
-const routesPath = path.join(__dirname, 'routes');
-function loadRoutes(directory) {
-    fs.readdirSync(directory).forEach(file => {
-        const routePath = path.join(directory, file);
-        const stats = fs.statSync(routePath);
-        if (stats.isDirectory()) {
-            loadRoutes(routePath);
-        } else if (stats.isFile()) {
-            const route = require(routePath);
-            const parsedPath = path.parse(routePath);
-            let relativePath = parsedPath.dir.replace(__dirname + '\\routes', '') + '\\' + parsedPath.base;
-            relativePath = relativePath.replace('.js', '');
-            relativePath = relativePath.replace(/\\/g, '/');
-            console.log(relativePath)
-            app.use(relativePath, route);
-        }
-    });
-}
+const auth = require('./routes/auth');
+const user = require('./routes/resources/user/index')
+const public = require('./routes/resources/public/index')
+const admin = require('./routes/resources/admin/index')
 
-loadRoutes(routesPath);
+app.use('/auth', auth);
+app.use('/resources/user', user);
+app.use('/resources/public', public);
+app.use('/resources/admin', admin);
+
