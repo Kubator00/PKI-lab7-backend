@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const PORT = 8080
+const PORT = process.env.PORT || 3000
 const cors = require('cors')
 const fs = require('fs');
 const path = require('path');
@@ -94,6 +94,7 @@ function loadRoutes(directory) {
             let relativePath = parsedPath.dir.replace(__dirname + '\\routes', '') + '\\' + parsedPath.base;
             relativePath = relativePath.replace('.js', '');
             relativePath = relativePath.replace(/\\/g, '/');
+            console.log(relativePath)
             app.use(relativePath, route);
         }
     });

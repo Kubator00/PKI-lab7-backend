@@ -103,8 +103,14 @@ router.post('/signin', async (req, res) => {
     const token = jwt.sign({ user: { email: user.email, roles: roles } }, process.env.PRIVATE_KEY, { expiresIn: 20000 });
 
 
-    res.header({ Authorization: token }).send({ message: "Sigin completed successfully", user: { ...user, token: token }});
+    res.header({ Authorization: token }).send({ message: "Sigin completed successfully", user: { ...user, token: token } });
 });
 
+router.get('/', (req, res) => {
+    res.send('auth get');
+})
 
+router.post('/', (req, res) => {
+    res.send('auth post');
+})
 module.exports = router;
